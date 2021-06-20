@@ -1,0 +1,14 @@
+html,
+body {
+	height: 100%;
+}
+
+#exampleCard,
+#successCard {
+	min-height: 350px;
+}
+
+#tokenMessage {
+	overflow-wrap: anywhere;
+	max-width: 100%;
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- BindID meta tags   ** Required! ** -->
+	<!-- Update the following meta tag with your client ID (same as .env file) -->
+	<meta name="xm-bind-id-client_id" content="[YOUR_CLIENT_ID]" />
+	<title>Example Login</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+	<!-- Our CSS -->
+	<link rel="stylesheet" href="css/styles.css" />
+
+	<!-- BindID SDK  ** Required! ** -->
+	<script
+		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2CPromise.prototype.finally%2CTextDecoder%2CTextEncoder%2CObject.entries"></script>
+	<script src="https://signin.bindid-sandbox.io/bindid-sdk/transmit-bind-id-sdk.js" defer></script>
+</head>
+
+<body>
+	<div class="container">
+		<div id="successCard"
+			class="visually-hidden card mt-3 p-3 shadow border-0 d-flex align-items-center justify-content-center">
+			<h1>Success!</h1>
+			<h3>Your token data is:</h3>
+			<p>
+				<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#userPassport"
+					aria-expanded="true" aria-controls="userPassport">
+					User Passport
+				</button>
+				<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#rawTokenData"
+					aria-expanded="false" aria-controls="rawTokenData">
+					Decoded Token
+				</button>
+			</p>
+			<div id="userPassport" class="card p-2 shadow collapse show">
+				<table class="table table-dark table-hover">
+					<tbody>
+						<tr>
+							<th scope="row"></th>
+							<td>User ID</td>
+							<td id="tableUserId"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User Alias</td>
+							<td id="tableUserAlias"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User Registered On</td>
+							<td id="tableUserRegistered"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User First Seen</td>
+							<td id="tableUserFirstSeen"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User First Confirmed</td>
+							<td id="tableUserFirstConfirmed"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User Last Seen</td>
+							<td id="tableUserLastSeen"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>User Last Seen by Network</td>
+							<td id="tableUserLastSeenByNetwork"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Total Providers that Confirmed User</td>
+							<td id="tableTotalProvidersConfirmed"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Authenticating Device Registered</td>
+							<td id="tableRegisteredDevice"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Authenticating Device Confirmed</td>
+							<td id="tableConfirmedDevice"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Authenticating Device Last Seen</td>
+							<td id="tableAuthDeviceLastSeen"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Authenticating Device Last Seen by Network</td>
+							<td id="tableAuthDeviceLastSeenByNetwork"></td>
+						</tr>
+						<tr>
+							<th scope="row"></th>
+							<td>Total Known Devices</td>
+							<td id="tableTotalDevices"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<pre id="rawTokenData" class="card p-2 shadow collapse"></pre>
+
+		</div>
+	</div>
+	<script src="redirect.js"></script>
+	<!-- JavaScript Bundle with Popper -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+		crossorigin="anonymous"></script>
+
+	<script>
+		let userPassportCard = document.getElementById('userPassport');
+		let rawTokenDataCard = document.getElementById('rawTokenData');
+		userPassportCard.addEventListener('show.bs.collapse', function () {
+			rawTokenDataCard.classList.remove('show');
+		})
+		rawTokenDataCard.addEventListener('show.bs.collapse', function () {
+			userPassportCard.classList.remove('show');
+		})
+	</script>
+</body>
+
+</html>
