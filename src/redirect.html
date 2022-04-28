@@ -8,7 +8,7 @@
 
 	<!-- BindID meta tags   ** Required! ** -->
 	<!-- Update the following meta tag with your client ID (same as .env file) -->
-	<meta name="xm-bind-id-client_id" content="[YOUR_CLIENT_ID]" />
+	<meta name="xm-bind-id-client_id" content="[YOUR_BINDID_CLIENT_ID]" />
 	<title>Example Login</title>
 
 	<!-- Bootstrap CSS -->
@@ -40,6 +40,14 @@
 					Decoded Token
 				</button>
 			</p>
+
+			<div id="setAliasContainer" class="card p-2 shadow">
+				<p>The User Alias was not set yet.<br/>Use the SessionFeedback API to set a new Alias for this user.</p>
+				<button class="btn btn-primary" id="setAliasButton" type="button">
+					Set User Alias
+				</button>
+			</div>
+
 			<div id="userPassport" class="card p-2 shadow collapse show">
 				<table class="table table-dark table-hover">
 					<tbody>
