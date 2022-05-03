@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require('cors');
 const axios = require('axios');
 const path = require("path");
+const crypto = require('crypto');
 
 const app = express();
 app.use(express.json());
@@ -68,6 +69,45 @@ app.post('/token', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 })
+
+app.post('/set-alias', async (req, res) => {
+  const { alias, accessToken } = req.body;
+
+  if (!alias, !accessToken) {
+    res.status(400).json({ error: `Missing body params required by BindID API` });
+    return;
+  }
+
+  const data = {
+    'subject_session_at': accessToken,
+    'reports': [{
+      'type': 'authentication_performed',
+      'alias': alias,
+      'time': Math.round(Date.now() / 1000)
+    }]
+  }
+
+  let feedbackAuth = crypto.createHmac('sha256', process.env.BINDID_CLIENT_SECRET).update(accessToken).digest('base64');
+  let authorizationHeader = `BindIdBackend AccessToken ${accessToken}; ${feedbackAuth}`;
+
+  const sessionFeedbackUrl = "https://api.bindid-sandbox.io/session-feedback";
+  
+  try {
+    const aliasResponse = await axios({
+      method: "post",
+      url: sessionFeedbackUrl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authorizationHeader
+      },
+      data: data,
+    });
+    res.status(200).json(aliasResponse.data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: `Internal Server Error` });
+  }
+});
 
 const port = process.env.PORT || 8080;
 

@@ -12,3 +12,9 @@ body {
 	overflow-wrap: anywhere;
 	max-width: 100%;
 }
+
+#setAliasContainer {
+	display: none;
+	text-align: center;
+	margin-bottom: 4px;
+}

@@ -10,9 +10,11 @@ function sendAuthCodeToServer(authCode) {
         body: JSON.stringify({ code: authCode }),
     }).then((res) => res.json())
         .then(body => {
+            const accessToken = body.access_token;
             const tokenData = JSON.parse(atob(body.id_token.split('.')[1], 'base64'));
             document.getElementById('rawTokenData').textContent = JSON.stringify(tokenData, null, 4);
             setPassportTableData(tokenData);
+            setAliasState(tokenData, accessToken);
             document.getElementById('successCard').classList.remove('visually-hidden');
         }).catch((error) => {
             console.error(error);
@@ -98,3 +100,37 @@ function setPassportTableData(tokenData) {
     }
 }
 
+function setAliasState(tokenData, accessToken){
+    if (tokenData.bindid_alias) return;
+
+    document.getElementById("setAliasContainer").style.display = "block";
+    document.getElementById("setAliasButton").onclick = () => {
+        const message = `
+        Please type an Alias to associate with this user.\n
+        Before using the feedback API to set the user alias remember to first 
+        identify the user with your existing authentication method.
+        `;
+        const selectedAlias = prompt(message);
+        if (!selectedAlias || selectedAlias.length === 0) return;
+
+        updateUserAlias(selectedAlias, accessToken);
+    }
+}
+
+function updateUserAlias(alias, accessToken) {
+    const tokenUrl = 'http://localhost:8080/set-alias';
+    
+    fetch(tokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ alias, accessToken }),
+    }).then((res) => res.json())
+        .then(body => {
+            document.getElementById("setAliasContainer").style.display = "none";
+            document.getElementById("tableUserAlias").innerText = alias;
+        }).catch((error) => {
+            console.error(error);
+        });
+}    
