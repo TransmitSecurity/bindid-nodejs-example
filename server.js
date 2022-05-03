@@ -74,7 +74,7 @@ app.post('/set-alias', async (req, res) => {
   const { alias, accessToken } = req.body;
 
   if (!alias, !accessToken) {
-    res.status(500).json({ error: `Missing body params required by BindID API` });
+    res.status(400).json({ error: `Missing body params required by BindID API` });
     return;
   }
 
