@@ -40,6 +40,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 function setPassportTableData(tokenData) {
+
     const tableData = [
         {
             tableRowId: 'tableUserId',
@@ -51,23 +52,23 @@ function setPassportTableData(tokenData) {
         },
         {
             tableRowId: 'tableUserRegistered',
-            tableRowData: Date(tokenData.bindid_network_info?.user_registration_time)
+            tableRowData: tokenData.bindid_network_info?.user_registration_time
         },
         {
             tableRowId: 'tableUserFirstSeen',
-            tableRowData: Date(tokenData.bindid_info.capp_first_login)
+            tableRowData: unixToDate(tokenData.bindid_info.capp_first_login)
         },
         {
             tableRowId: 'tableUserFirstConfirmed',
-            tableRowData: Date(tokenData.bindid_info.capp_first_confirmed_login) || 'Never'
+            tableRowData: unixToDate(tokenData.bindid_info.capp_first_login_from_authenticating_device) || 'Never'
         },
         {
             tableRowId: 'tableUserLastSeen',
-            tableRowData: Date(tokenData.bindid_info?.capp_last_login) || 'Never'
+            tableRowData: unixToDate(tokenData.bindid_info?.capp_last_login) || 'Never'
         },
         {
             tableRowId: 'tableUserLastSeenByNetwork',
-            tableRowData: Date(tokenData.bindid_network_info?.user_last_seen) || 'Never'
+            tableRowData: tokenData.bindid_network_info?.user_last_seen || 'Never'
         },
         {
             tableRowId: 'tableTotalProvidersConfirmed',
@@ -75,7 +76,7 @@ function setPassportTableData(tokenData) {
         },
         {
             tableRowId: 'tableRegisteredDevice',
-            tableRowData: Date(tokenData.bindid_info?.capp_last_login_from_authenticating_device) || 'Never'
+            tableRowData: unixToDate(tokenData.bindid_info?.capp_last_login_from_authenticating_device) || 'Never'
         },
         {
             tableRowId: 'tableConfirmedDevice',
@@ -83,11 +84,11 @@ function setPassportTableData(tokenData) {
         },
         {
             tableRowId: 'tableAuthDeviceLastSeen',
-            tableRowData: Date(tokenData.bindid_info?.capp_last_login_from_authenticating_device) || 'Never'
+            tableRowData: unixToDate(tokenData.bindid_info?.capp_last_login_from_authenticating_device) || 'Never'
         },
         {
             tableRowId: 'tableAuthDeviceLastSeenByNetwork',
-            tableRowData: Date(tokenData.bindid_network_info?.authenticating_device_last_seen) || 'Never'
+            tableRowData: unixToDate(tokenData.bindid_network_info?.authenticating_device_last_seen) || 'Never'
         },
         {
             tableRowId: 'tableTotalDevices',
@@ -98,6 +99,11 @@ function setPassportTableData(tokenData) {
     for (const elem of tableData) {
         document.getElementById(elem.tableRowId).textContent = elem.tableRowData;
     }
+}
+
+function unixToDate(timestamp) {
+    if (!timestamp) return "N/A";
+    return new Date(timestamp * 1000);
 }
 
 function setAliasState(tokenData, accessToken){
